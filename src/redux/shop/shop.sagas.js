@@ -21,7 +21,7 @@ export function* fetchCollectionsAsync(){
     yield put(fetchCollectionsFailure(error.message))
   }
 
- /* the old code in shop actions with redux-thunk*/
+ /* the old code in shop.actions with redux-thunk*/
  /*collectionRef
   .get()
   .then(snapshot => {

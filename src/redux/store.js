@@ -5,9 +5,8 @@ when debugging our redux code*/
 import createSagaMiddleware from 'redux-saga';
 import {persistStore} from 'redux-persist';
 /*allows our browser to actually cache our store*/
-import {fetchCollectionsStart} from './shop/shop.sagas';
-
 import rootReducer from './root-reducer';
+import rootSaga from './root-saga';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -19,5 +18,5 @@ if(process.env.NODE_ENV === 'development'){
 
 export const store = createStore(rootReducer,applyMiddleware(...middlewares));
 /*applyMiddleware(...middlewares) for know the prev state,action,next state*/
-sagaMiddleware.run(fetchCollectionsStart);
+sagaMiddleware.run(rootSaga);
 export const persistor = persistStore(store);

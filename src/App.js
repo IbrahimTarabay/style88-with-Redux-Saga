@@ -12,8 +12,6 @@ import CheckoutPage from './pages/checkout/checkout';
 
 import Header from './components/header/header';
 
-import { auth, createUserProfileDocument } from './firebase/firebase.utils';
-
 import { setCurrentUser } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selectors';
 /*import { selectCollectionsForPreview } from './redux/shop/shop.selectors';*/
@@ -21,38 +19,39 @@ import { selectCurrentUser } from './redux/user/user.selectors';
 class App extends React.Component {
   unsubscribeFromAuth = null; 
   
-  componentDidMount(){
-    const {setCurrentUser} = this.props;
-    /*it's an open messaging system between app and firebase*/
-    /*this connection is always open as long as our app component is mounted on dom*/ 
-    /*we stored the user data in our database in firebase.utils.js
-     but now we have to store that data in the "state" of our app so we can use it*/ 
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth =>{
-      if(userAuth){/*if user signed in*/
-        const userRef = await createUserProfileDocument(userAuth);
-        /*we will get user object if he have object in database*/
-        userRef.onSnapshot(snapShot =>{/*to get snapshot object(data of user) from that reference*/ 
+  // componentDidMount(){
+  //   const {setCurrentUser} = this.props;
+  //   /*it's an open messaging system between app and firebase*/
+  //   /*this connection is always open as long as our app component is mounted on dom*/ 
+  //   /*we stored the user data in our database in firebase.utils.js
+  //    but now we have to store that data in the "state" of our app so we can use it*/ 
+    
+  //    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth =>{
+  //     if(userAuth){/*if user signed in*/
+  //       const userRef = await createUserProfileDocument(userAuth);
+  //       /*we will get user object if he have object in database*/
+  //       userRef.onSnapshot(snapShot =>{/*to get snapshot object(data of user) from that reference*/ 
            
-          setCurrentUser({
-            id: snapShot.id,
-            ...snapShot.data()
-          });/*this function like setState*/
-        });
-      }
-      else{/*if user log out set currentUser to null*/ 
-        setCurrentUser(userAuth);
-      }
-      /*addCollectionAndDocuments('collections',collectionsArray.map(({title,items}) =>
-      ({title,items})))
-      });*//*we just fire it once to enter shop data*/
-    } 
-  )}
+  //         setCurrentUser({
+  //           id: snapShot.id,
+  //           ...snapShot.data()
+  //         });/*this function like setState*/
+  //       });
+  //     }
+  //     else{/*if user log out set currentUser to null*/ 
+  //       setCurrentUser(userAuth);
+  //     }
+  //     /*addCollectionAndDocuments('collections',collectionsArray.map(({title,items}) =>
+  //     ({title,items})))
+  //     });*//*we just fire it once to enter shop data*/
+  //   } 
+  // )}
 
-  /*we have to close subscription when unmount because we don't want memory leaks in our js app
-  related to listeners still being open even if the component that cares about the listener is no longer on the page*/
-  componentWillUnmount(){
-    this.unsubscribeFromAuth();
-  }
+  // /*we have to close subscription when unmount because we don't want memory leaks in our js app
+  // related to listeners still being open even if the component that cares about the listener is no longer on the page*/
+   componentWillUnmount(){
+     this.unsubscribeFromAuth();
+   }
 
   render(){
     const {currentUser} = this.props;
