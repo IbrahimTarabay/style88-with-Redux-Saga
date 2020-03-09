@@ -7,6 +7,8 @@ import { auth } from '../../firebase/firebase.utils';
 import CartIcon from '../cart-icon/cart-icon';
 import CartDropdown from '../cart-dropdown/cart-dropdown';
 
+import {signOutStart} from '../../redux/user/user.actions';
+
 import { selectCartHidden } from '../../redux/cart/cart.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 
@@ -14,7 +16,7 @@ import {HeaderContainer,LogoContainer,OptionsContainer,OptionLink} from './heade
 
 import style88 from '../../assets/style88.png';
 
-const Header = ({currentUser,hidden}) =>(
+const Header = ({currentUser,hidden,signOutStart}) =>(
     <HeaderContainer>
       <LogoContainer to="/">
        <img alt="style88" src={style88} style={{ height:100, width: 110 }} />
@@ -28,7 +30,7 @@ const Header = ({currentUser,hidden}) =>(
           </OptionLink>
           {
             currentUser ?
-            <OptionLink as='div' onClick={()=>auth.signOut()}>SIGN OUT</OptionLink>
+            <OptionLink as='div' onClick={signOutStart}>SIGN OUT</OptionLink>
             :
             <OptionLink to='/signin'>SIGN IN</OptionLink>
           }
@@ -38,25 +40,15 @@ const Header = ({currentUser,hidden}) =>(
         {/*we move the functionality of the CartDropdown
         outside the header component and put it inside of global redux state*/}
       </HeaderContainer>
-)
-
-/*we can name this function anything but this the standard, state here indication for root state*/
-/*
-const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
-  currentUser,/*instead of currentUser: state.user.currentUser
-  hidden/*instead of hidden: state.cart.hidden
-});
-*/
-
-/*const mapStateToProps = (state) => ({
-  currentUser: selectCurrentUser(state),
-  hidden: selectCartHidden(state)  
-});*/
-/*instead of this we will use reateStructuredSelector*/
+);
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
   hidden: selectCartHidden
-})/*automatically pass the top level state*/
+});/*automatically pass the top level state*/
 
-export default connect(mapStateToProps)(Header);
+const mapDispatchToProps = dispatch => ({
+  signOutStart: () => dispatch(signOutStart())
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(Header);

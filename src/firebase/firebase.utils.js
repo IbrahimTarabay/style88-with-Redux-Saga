@@ -53,30 +53,17 @@ const config = {
       accumulator[collection.title.toLowerCase()] = collection;
       return accumulator;
     },{});
-  };/*to turn collection to object with key of title and value of array like 
-  hats:{
-    id: 1,
-    title: 'Hats',
-    routeName: 'hats',
-    items: [....]*/
+  };
 
-  /*firebase will always give us back the reference object and 
-  snapshot object if nothing exists*/
-  /*export const addCollectionAndDocuments = async (collectionKey,objectsToAdd) => {
-    const collectionRef = firestore.collection(collectionKey);
-
-    const batch = firestore.batch();
-    /*with batch we want to make all requests happen as bundle so
-    all newDocRef created with all objects*/
-    /*objectsToAdd.forEach(obj => {
-      const newDocRef = collectionRef.doc();
-      /*randomly generate unique id for me
-      batch.set(newDocRef,obj);
-    });
-    return await batch.commit()
-    /*to fire our batch request
-  };*/
-  /*we just use this commented code once to enter our collection data with no manual effort*/
+  export const getCurrentUser= () =>{
+    return new Promise((resolve,reject) =>{
+      const unsubscribe = auth.onAuthStateChanged(userAuth =>{
+        /*once we get userAuth we can unsubscribe*/
+        unsubscribe();
+        resolve(userAuth);
+      },reject)
+    })
+  };/*we pass this function to user.saga to help to have persistance session in our app*/
 
   firebase.initializeApp(config);
 
