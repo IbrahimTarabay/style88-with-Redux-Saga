@@ -1,9 +1,10 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
 import FormInput from '../form-input/form-input';
 import CustomButton from '../custom-button/custom-button';
 
-import {auth,createUserProfileDocument} from '../../firebase/firebase.utils';
+import {signUpStart} from '../../redux/user/user.actions';
 
 import './sign-up.scss';
 
@@ -21,28 +22,13 @@ class SignUp extends React.Component{
 
   handleSubmit = async event =>{
     event.preventDefault();
+    const {signUpStart} = this.props;
     const {displayName,email,password,confirmPassword} = this.state;
     if(password !== confirmPassword){
       alert("passwords don't match");
       return;
     }
-    /*creates a new user account associated with the specified email and password,
-     on successful creation, this user will also be signed in to your app,
-      user account creation can fail if the account already exists or password is invalid*/ 
-    try{
-      const {user} = await auth.createUserWithEmailAndPassword(email,password);
-      await createUserProfileDocument(user,{displayName});
-      /*object comes from firbase which has property displayName so we destructring*/
-
-      this.setState({
-        displayName:'',
-        email: '',
-        password:'',
-        confirmPassword:''
-      });/*to clear our form*/
-    }catch(error){
-       alert("please: "+error.message);
-    }
+    signUpStart({displayName,email,password});
   };
 
   handleChange = event =>{
@@ -101,4 +87,8 @@ class SignUp extends React.Component{
     }
   }
 
-  export default SignUp;
+  const mapDispatchToProps = dispatch => ({
+    signUpStart: userCredentials => dispatch(signUpStart(userCredentials))
+  })
+
+  export default connect(null,mapDispatchToProps)(SignUp);

@@ -21,10 +21,11 @@ const userReducer = (state=INITIAL_STATE,action)=>{/*we should set a specific ac
         }; 
       case UserActionTypes.SIGN_IN_FAILURE:
       case UserActionTypes.SIGN_OUT_FAILURE:
+      case UserActionTypes.SIGN_UP_FAILURE:
         return{
-          ...state,
-          error: action.payload
-        }
+            ...state,
+            error: action.payload
+          }
       default:
         return state;
    }
