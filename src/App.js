@@ -12,7 +12,6 @@ import CheckoutPage from './pages/checkout/checkout';
 
 import Header from './components/header/header';
 
-import { setCurrentUser } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selectors';
 /*import { selectCollectionsForPreview } from './redux/shop/shop.selectors';*/
 
@@ -86,14 +85,7 @@ const mapStateToProps = createStructuredSelector({
   /*collectionsArray: selectCollectionsForPreview*/
 });/*we use this function to be able to use currentUser state in code it's like this.state*/
 
-const mapDispatchToProps = dispatch =>({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
-  /*dispatch() whatever you're passing object is going to be an action that i'm going to pass to every reducer*/
-  /*the user will be then used as a payload*/
-})
-/*we use this function to be able to use setCurrentUser*/
-
-export default connect(mapStateToProps,mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);
 
 /*App component don't need currentUser anymore it's only setState it
 so we will pass null as first argument*/

@@ -7,15 +7,13 @@ const INITIAL_STATE = {
 
 const userReducer = (state=INITIAL_STATE,action)=>{/*we should set a specific action to return our new object*/
    switch(action.type){
-     case UserActionTypes.GOOGLE_SIGN_IN_SUCCESS:
-     case UserActionTypes.EMAIL_SIGN_IN_SUCCESS:  
+     case UserActionTypes.SIGN_IN_SUCCESS: 
        return{
          ...state,
          currentUser: action.payload,
          error: null
        };/*we can't just modify like state.currentUser=action.payload because we must return new object to rerender*/
-       case UserActionTypes.GOOGLE_SIGN_IN_FAILURE:
-       case UserActionTypes.EMAIL_SIGN_IN_FAILURE:
+       case UserActionTypes.SIGN_IN_FAILURE:
          return{
           ...state,
           error: action.payload
