@@ -1,8 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-
-import { auth } from '../../firebase/firebase.utils';
 
 import CartIcon from '../cart-icon/cart-icon';
 import CartDropdown from '../cart-dropdown/cart-dropdown';
@@ -12,34 +11,34 @@ import {signOutStart} from '../../redux/user/user.actions';
 import { selectCartHidden } from '../../redux/cart/cart.selectors';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 
-import {HeaderContainer,LogoContainer,OptionsContainer,OptionLink} from './header.styles';
+import './header.scss';
 
 import style88 from '../../assets/style88.png';
 
 const Header = ({currentUser,hidden,signOutStart}) =>(
-    <HeaderContainer>
-      <LogoContainer to="/">
+    <div className='header'>
+      <Link className='logo-container' to="/">
        <img alt="style88" src={style88} style={{ height:100, width: 110 }} />
-      </LogoContainer>
-      <OptionsContainer>
-          <OptionLink to='/shop'>
+      </Link>
+      <div className='options'>
+          <Link className='option' to='/shop'>
               SHOP
-          </OptionLink>
-          <OptionLink to='/shop'>
+          </Link>
+          <Link className='option' to='/shop'>
               CONTACT
-          </OptionLink>
+          </Link>
           {
             currentUser ?
-            <OptionLink as='div' onClick={signOutStart}>SIGN OUT</OptionLink>
+            <div className='option' onClick={signOutStart}>SIGN OUT</div>
             :
-            <OptionLink to='/signin'>SIGN IN</OptionLink>
+            <Link className='option' to='/signin'>SIGN IN</Link>
           }
           <CartIcon />
-        </OptionsContainer>
+        </div>
         {hidden ? null : <CartDropdown />}
         {/*we move the functionality of the CartDropdown
         outside the header component and put it inside of global redux state*/}
-      </HeaderContainer>
+      </div>
 );
 
 const mapStateToProps = createStructuredSelector({
